@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService{
                 LOGGER.info("Message sent successfully: {}", result.getRecordMetadata());
             }
         });
-
+        LOGGER.info("Returning product id");
         return productId;
     }
 }
