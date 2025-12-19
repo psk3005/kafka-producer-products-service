@@ -1,5 +1,6 @@
 package com.praveen.kafka.example.kafka_producer_products_service.service;
 
+import com.praveen.kafka.example.kafka_core.ProductCreatedEvent;
 import com.praveen.kafka.example.kafka_producer_products_service.model.CreateProductRestModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
