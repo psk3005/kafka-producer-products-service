@@ -2,6 +2,7 @@ package com.praveen.kafka.example.kafka_producer_products_service.service;
 
 import com.praveen.kafka.example.kafka_core.ProductCreatedEvent;
 import com.praveen.kafka.example.kafka_producer_products_service.model.CreateProductRestModel;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,13 @@ public class ProductServiceImpl implements ProductService{
                 productRestModel.getTitle(),
                 productRestModel.getPrice(),
                 productRestModel.getQuantity());
+
+        ProducerRecord<String, ProductCreatedEvent> record = new ProducerRecord<>("product-created-events-topic",
+                productId,
+                productCreatedEvent);
+        record.headers().add("messageId", UUID.randomUUID().toString().getBytes());
         CompletableFuture<SendResult<String, ProductCreatedEvent>> future =
-                kafkaTemplate.send("product-created-events-topic", productId, productCreatedEvent);
+                kafkaTemplate.send(record);
         future.whenComplete((result, exception) -> {
             if (exception != null) {
                 LOGGER.error("Failed to send message: {}", exception.getMessage());
